@@ -1,6 +1,6 @@
 
 /**
- * Write a description of class Bebedor here.
+ * Bebedor de copas
  * 
  * @author (your name) 
  * @version (a version number or a date)
@@ -48,10 +48,10 @@ public class Bebedor
      */
     public void hacerPreguntas(String pregunta)
     {
-        // Comprobamos primero si se ha pasado del limite de alcohol en sangre
         if ((haLlegadoAlLimite()) || (pregunta.contains(nombre)))
         {
-            // Si se ha pasado del limite o contiene su nombre, responde con la pregunta gritando
+            // Si se ha pasado del limite o la pregunta contiene su nombre, 
+            // responde con la pregunta a gritos
             pregunta = pregunta.toUpperCase();
             System.out.println(pregunta);
         }
@@ -67,6 +67,28 @@ public class Bebedor
             {
                 System.out.println("No");
             }
+            
+            // *********************************
+            
+            /*int numLetrasPregunta = 0;
+            for (int i = 0; i < pregunta.length; i++)
+            {
+                if (Character.isAlphabetic(pregunta[i]))
+                {
+                    numLetrasPregunta++;
+                }
+            }
+            
+            if ((numLetrasPregunta%2) == 0)
+            {
+                System.out.println("Si");
+            }
+            else
+            {
+                System.out.println("No");
+            }
+            */
+            // *********************************            
         }
     }
 
