@@ -13,6 +13,8 @@ public class Bebedor
     private int alcoholEnSangre;
     // Limite de alcohol que puede tener en sangre
     private int limiteAlcohol;
+    // Acumula la puntuacion en los dardos de la partida en curso, si participa
+    private int puntuacion;
 
     /**
      * Constructor para los bebedores. Introduce el nombre y cuanto alcohol aguanta.
@@ -23,6 +25,7 @@ public class Bebedor
         this.nombre = nombre;
         this.limiteAlcohol = limiteAlcohol;
         alcoholEnSangre = 0;
+        puntuacion = 0;
     }
 
     /**
@@ -42,13 +45,29 @@ public class Bebedor
             alcoholEnSangre = alcoholEnSangre + nombreCopa.getCantidadAlcohol();
         }
     }
-    
+
     /**
      * Devuelve el alcohol en sangre del bebedor
      */
     public int getAlcoholEnSangre()
     {
         return alcoholEnSangre;
+    }
+
+    /**
+     * Devuelve el nombre del bebedor
+     */
+    public String getNombre()
+    {
+        return nombre;
+    }
+
+    /**
+     * Devuelve el limite de alcohol en sangre del bebedor
+     */
+    public int getLimite()
+    {
+        return limiteAlcohol;
     }
 
     /**
@@ -75,27 +94,27 @@ public class Bebedor
             {
                 System.out.println("No");
             }
-            
+
             // *********************************
-            
+
             /*int numLetrasPregunta = 0;
             for (int i = 0; i < pregunta.length; i++)
             {
-                if (Character.isAlphabetic(pregunta[i]))
-                {
-                    numLetrasPregunta++;
-                }
+            if (Character.isAlphabetic(pregunta[i]))
+            {
+            numLetrasPregunta++;
             }
-            
+            }
+
             if ((numLetrasPregunta%2) == 0)
             {
-                System.out.println("Si");
+            System.out.println("Si");
             }
             else
             {
-                System.out.println("No");
+            System.out.println("No");
             }
-            */
+             */
             // *********************************            
         }
     }
