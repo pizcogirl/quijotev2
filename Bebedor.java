@@ -42,6 +42,14 @@ public class Bebedor
             alcoholEnSangre = alcoholEnSangre + nombreCopa.getCantidadAlcohol();
         }
     }
+    
+    /**
+     * Devuelve el alcohol en sangre del bebedor
+     */
+    public int getAlcoholEnSangre()
+    {
+        return alcoholEnSangre;
+    }
 
     /**
      * Hace una pregunta al bebedor
