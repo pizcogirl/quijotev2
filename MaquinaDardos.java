@@ -32,7 +32,7 @@ public class MaquinaDardos
         // Si el juego aun no ha empezado, admite nuevos jugadores
         if (ronda == 0)
         {
-            
+            jugadorNuevo.setPuntuacion(0);
             partida.add(jugadorNuevo);
         }
         // Si no imprime un mensaje de error
@@ -61,7 +61,7 @@ public class MaquinaDardos
                     int alcohol = lanzadorDardos.getAlcoholEnSangre();
                     int limite = lanzadorDardos.getLimite();
                     int puntosRonda = calculaPuntuacion (alcohol, limite);
-                    lanzadorDardos.sumaPuntuacion(puntosRonda);
+                    lanzadorDardos.setPuntuacion((puntosRonda + lanzadorDardos.getPuntuacion()));
                     System.out.println("La puntuacion del jugador " + lanzadorDardos.getNombre() + " es " + puntosRonda); 
                 }
             }
@@ -95,7 +95,7 @@ public class MaquinaDardos
             if (puntosJugador > maximoPuntos)
             {
                 maximoPuntos = puntosJugador;
-                ganador = jugador.getJugador();
+                ganador = jugador.getNombre();
             }
             // Si la puntuación del jugador es igual al maximo que tengamos guardado, se guarda su nombre
             // tambien al ser tambien ganador
@@ -103,6 +103,7 @@ public class MaquinaDardos
             {
                 ganador = ganador + " y " + jugador.getNombre();
             }
+            jugador.setPuntuacion(0);
         }
         // Una vez contabilizadas, mostramos por pantalla el o los ganadores, y la puntuacion maxima obtenida
         System.out.println ("El ganador de la partida ha sido " + ganador + 

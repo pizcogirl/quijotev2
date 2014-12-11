@@ -136,4 +136,20 @@ public class Bebedor
         }
         return bebidoDemasiado;
     }
+    
+     /**
+     * Devuelve la puntuacion actual del bebedor
+     */
+    public int getPuntuacion()
+    {
+        return puntuacion;
+    }
+    
+    /**
+     * Ajusta la puntuación a un nuevo valor introducido
+     */
+    public void setPuntuacion (int puntos)
+    {
+        puntuacion = puntos;
+    }
 }
