@@ -105,9 +105,17 @@ public class MaquinaDardos
             }
             jugador.setPuntuacion(0);
         }
-        // Una vez contabilizadas, mostramos por pantalla el o los ganadores, y la puntuacion maxima obtenida
-        System.out.println ("El ganador de la partida ha sido " + ganador + 
-        " con un total de " + maximoPuntos + " tras un total de " + ronda + " rondas");
+        // Si el jugador ha obtenido una partida perfecta, muestra un mensaje informando de ello
+        if (maximoPuntos == 70)
+        {
+            System.out.println("¡¡¡El jugador " + ganador + " ha realizado una partida perfecta!!!");
+        }
+        else
+        {
+            // Sino mostramos por pantalla el o los ganadores, y la puntuacion maxima obtenida
+            System.out.println ("El ganador de la partida ha sido " + ganador + 
+                " con un total de " + maximoPuntos + " tras un total de " + ronda + " rondas");
+        }
         // Reinicia el numero de rondas y borra todos los participantes
         ronda = 0;
         partida.clear();
@@ -121,7 +129,7 @@ public class MaquinaDardos
         for (Bebedor jugador : partida)
         {
             System.out.println("El jugador " + jugador.getNombre() + " ha alcanzado " 
-            + jugador.getPuntuacion() + " puntos tras un total de " + ronda + " rondas");
+                + jugador.getPuntuacion() + " puntos tras un total de " + ronda + " rondas");
         }
     }
 
