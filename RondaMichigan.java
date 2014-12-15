@@ -22,8 +22,8 @@ public class RondaMichigan
     private ArrayList<Bebedor> jugadores;
     // Guarda la peor tirada de la ronda para saber quien es el perdedor
     private int peorTirada;
-    // Guarda el peor jugador de la ronda
-    private Bebedor peorJugador;
+    // Guarda la posicion del peor jugador de la ronda
+    private int posicionPeorJugador;
 
     /**
      * Constructor for objects of class RondaMichigan
@@ -33,7 +33,6 @@ public class RondaMichigan
         // Inicializamos la ArrayList vacia y las demas variables a 0 o null
         jugadores = new ArrayList<Bebedor>();
         peorTirada = 0;
-        peorJugador = null;
     }
 
     /**
@@ -51,6 +50,7 @@ public class RondaMichigan
     {
         // Inicializamos la peor tirada con un valor no posible, para luego ir comparando con la de cada jugador
         int peorTirada = 16;
+        Bebedor peorJugador = null;
         for ( Bebedor jugador : jugadores)
         {
             // Para cada jugador realizamos la tirada, y guardamos la peor junto con el peor jugador para facilitar la cuenta de puntos
@@ -59,6 +59,7 @@ public class RondaMichigan
             {
                 peorTirada = puntuacion;
                 peorJugador = jugador;
+                posicionPeorJugador = jugadores.indexOf(peorJugador);
             }
             // Imprime la puntuacion de cada jugador
             System.out.println("El jugador " + jugador.getNombre() + " ha sacado una puntuacion de " + puntuacion);
@@ -66,13 +67,21 @@ public class RondaMichigan
         // Imrpime un mensaje avisando quien ha sacado la peor puntuacion esta ronda
         System.out.println ("El jugador " + peorJugador.getNombre() + " ha sacado la peor puntuacion");
     }
-    
+
     /**
      * Devuelve el numero de jugadores inscritos en la partida
      */
     public int getJugadores()
     {
         return jugadores.size();
+    }
+
+    /**
+     * Devuelve la posicion en el indice del jugador perdedor de la ronda
+     */
+    public int getIndicePerdedor()
+    {
+        return posicionPeorJugador;
     }
 
     /**
