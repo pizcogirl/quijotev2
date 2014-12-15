@@ -1,33 +1,48 @@
+import java.util.ArrayList;
 
 /**
- * Write a description of class Michigan here.
+ * Esta clase representa una partida completa de michigan.
+ * El conteo de las puntuaciones se llevara aqui, asi como las
+ * penalizaciones por cada ronda que obligan a beber
  * 
- * @author (your name) 
+ * @author (Julia Zuara) 
  * @version (a version number or a date)
  */
 public class Michigan
 {
-    // instance variables - replace the example below with your own
-    private int x;
+    // Almacenamos la lista de rondas que componen la partida
+    private ArrayList<RondaMichigan> rondasPartida;
+    // Almacenamos la puntuacion de cada jugador en otra lista
+    private ArrayList<Integer> puntuacion;
+    // 
 
     /**
-     * Constructor for objects of class Michigan
+     * Constructor para la partida de Michigan, se inicia introduciendo una ronda
+     * de michigan sin jugadores apuntados aun
      */
-    public Michigan()
+    public Michigan(RondaMichigan rondaInicial)
     {
-        // initialise instance variables
-        x = 0;
+        // Inicializamos las arraylist
+        rondasPartida = new ArrayList<RondaMichigan>();
+        puntuacion = new ArrayList<Integer>();
+        // Comprobamos si la ronda esta vacia, de ser asi podemos inicializarlo
+        if (rondaInicial.getJugadores() == 0)
+        {
+            rondasPartida.add(rondaInicial);
+            puntuacion = null;
+        }
+        else
+        {
+            System.out.println("Esa ronda no es valida para iniciar una partida de michigan");
+        }
     }
-
+    
     /**
-     * An example of a method - replace this comment with your own
-     * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
+     * Añade jugadores a la partida de michigan. Los añade a la ronda con la mayor puntuacion
+     * que haya en ese momento
      */
-    public int sampleMethod(int y)
+    public void añadirJugador(Bebedor jugadorNuevo)
     {
-        // put your code here
-        return x + y;
+        
     }
 }

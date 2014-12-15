@@ -49,11 +49,12 @@ public class RondaMichigan
      */
     public void jugarRonda()
     {
+        // Inicializamos la peor tirada con un valor no posible, para luego ir comparando con la de cada jugador
+        int peorTirada = 16;
         for ( Bebedor jugador : jugadores)
         {
             // Para cada jugador realizamos la tirada, y guardamos la peor junto con el peor jugador para facilitar la cuenta de puntos
             int puntuacion = hacerTirada();
-            int peorTirada = 0;
             if (puntuacion < peorTirada)
             {
                 peorTirada = puntuacion;
@@ -64,6 +65,14 @@ public class RondaMichigan
         }
         // Imrpime un mensaje avisando quien ha sacado la peor puntuacion esta ronda
         System.out.println ("El jugador " + peorJugador.getNombre() + " ha sacado la peor puntuacion");
+    }
+    
+    /**
+     * Devuelve el numero de jugadores inscritos en la partida
+     */
+    public int getJugadores()
+    {
+        return jugadores.size();
     }
 
     /**
