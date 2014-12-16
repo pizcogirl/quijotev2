@@ -3,15 +3,6 @@ import java.util.Random;
 
 /**
  * Simulamos una ronda de michigan (juego de dados)
- * Reglas de cada ronda introducidas:
- * - Si sale un doble, se envia un reto, el perdedor bebe una copa
- * - Si sale 1 + 2, es michigan, el autor es ganador de la ronda
- * - El jugador con menor puntuacion es el perdedor de la ronda
- * - Las valoraciones van de la siguiente manera: michigan gana a todo,
- *   despues van los dobles, por orden de valor, por ultimo las tiradas 
- *   simples excluido el 1 + 2
- * - Los jugadores solo disponen de una tirada (version simplificada)
- * Existen otras ocurrencias especiales, por ahora excluidas
  * 
  * @author (Julia Zuara) 
  * @version (a version number or a date)
@@ -24,15 +15,20 @@ public class RondaMichigan
     private int peorTirada;
     // Guarda la posicion del peor jugador de la ronda
     private int posicionPeorJugador;
+    // Guarda el peor jugador de la ronda
+    private Bebedor peorJugador;
 
     /**
      * Constructor for objects of class RondaMichigan
      */
     public RondaMichigan()
     {
-        // Inicializamos la ArrayList vacia y las demas variables a 0 o null
+        // Inicializamos las ArrayList vacias y las demas variables a 0 o valores
+        // no posibles
         jugadores = new ArrayList<Bebedor>();
         peorTirada = 0;
+        posicionPeorJugador = -1;
+        peorJugador = null;
     }
 
     /**
@@ -50,28 +46,56 @@ public class RondaMichigan
     {
         // Inicializamos la peor tirada con un valor no posible, para luego ir comparando con la de cada jugador
         int peorTirada = 16;
-        Bebedor peorJugador = null;
+        // Guarda la posicion del peor o los peores jugadores de la ronda
+        ArrayList<Integer> listaPosicionPeorJugador = new ArrayList<Integer>();
+        // Guarda el o los peores jugadores de la ronda
+        ArrayList<Bebedor> listaPeorJugador = new ArrayList<Bebedor>();
         for ( Bebedor jugador : jugadores)
         {
             // Para cada jugador realizamos la tirada, y guardamos la peor junto con el peor jugador para facilitar la cuenta de puntos
-            int puntuacion = hacerTirada();
-            if (puntuacion < peorTirada)
+            int puntuacion = hacerTirada(jugador.getNombre());
+            // Si hay empate crearemos una lista, y despues jugaran una ronda extra entre ellos hasta que quede uno
+            if (puntuacion == peorTirada)
+            {
+                // Si hay mas de un perdedor, nos guardara todos en una arraylist y despues realizaremos los desempates
+                peorTirada = puntuacion;
+                listaPeorJugador.add(jugador);
+                listaPosicionPeorJugador.add(jugadores.indexOf(jugador));
+            }
+            else if (puntuacion < peorTirada)
             {
                 peorTirada = puntuacion;
                 peorJugador = jugador;
                 posicionPeorJugador = jugadores.indexOf(peorJugador);
+                listaPeorJugador.clear();
+                listaPosicionPeorJugador.clear();
             }
-            // Imprime la puntuacion de cada jugador
-            System.out.println("El jugador " + jugador.getNombre() + " ha sacado una puntuacion de " + puntuacion);
+        }
+        // En caso de empate, se juega una ronda de desempate entre los perdedores hasta que solo quede uno
+        while (listaPeorJugador.size() > 1)
+        {
+            for ( Bebedor jugador : listaPeorJugador)
+            {
+                // Para cada jugador realizamos la tirada, y guardamos la peor junto con el peor jugador para facilitar la cuenta de puntos
+                int puntuacion = hacerTirada(jugador.getNombre());
+                if (puntuacion < peorTirada)
+                {
+                    peorTirada = puntuacion;
+                    peorJugador = jugador;
+                    posicionPeorJugador = listaPosicionPeorJugador.get(listaPeorJugador.indexOf(jugador));
+                }
+            }
+
+
         }
         // Imrpime un mensaje avisando quien ha sacado la peor puntuacion esta ronda
-        System.out.println ("El jugador " + peorJugador.getNombre() + " ha sacado la peor puntuacion");
+        // System.out.println ("El jugador " + peorJugador.getNombre() + " ha sacado la peor tirada");
     }
 
     /**
      * Devuelve el numero de jugadores inscritos en la partida
      */
-    public int getJugadores()
+    public int getNumeroJugadores()
     {
         return jugadores.size();
     }
@@ -85,18 +109,53 @@ public class RondaMichigan
     }
 
     /**
+     * Devuelve el jugador perdedor de la ronda
+     */
+    public Bebedor getPerdedor()
+    {
+        return peorJugador;
+    }
+
+    /**
+     * Elimina el jugador con el numero indicado de la ronda
+     */
+    public void borrarJugador(int index)
+    {
+        jugadores.remove(index);
+    }
+
+    /**
+     * Devuelve el jugador con el numero indicado de la ronda
+     */
+    public Bebedor getJugador(int index)
+    {
+        return jugadores.get(index);
+    }
+
+    /**
+     * Devuelve el primer jugador de la lista
+     */
+    public Bebedor getJugador()
+    {
+        return jugadores.get(0);
+    }
+
+    /**
      * Metodo para realizar las tiradas de cada jugador
      */
-    private int hacerTirada()
+    private int hacerTirada(String nombre)
     {
-        int puntos = 0;
+        // Creamos los dados para las tiradas
         int dado1 = 0;
         int dado2 = 0;
-        Random numRan1 = new Random();
+        // Creamos variables locales para almacenar los puntos y dos random para simular tiradas aleatorias
+        int puntos = 0;
+        // A uno de ellos le añadimos una seed distinta para conseguir una mejor aleatoriedad
+        Random numRan1 = new Random(System.currentTimeMillis());
         Random numRan2 = new Random();
-        dado1 = numRan1.nextInt(7);
-        dado2 = numRan2.nextInt(7);
-        // COn un if recogemos todas las posibles puntuaciones que podemos obtener
+        dado1 = numRan1.nextInt(6) + 1;
+        dado2 = numRan2.nextInt(7) + 1;
+        // Con un if recogemos todas las posibles puntuaciones que podemos obtener
         if (((dado1 == 1) && (dado2 == 2)) || ((dado1 == 2) && (dado2 == 1)))
         {
             // Un michigan es la maxima tirada, sacando un 1 y un 2
@@ -173,7 +232,8 @@ public class RondaMichigan
             // Solo queda la posibilidad del 4, con las tiradas 3 y 1 o 1 y 3, que es la peor tirada posible
             puntos = 1;
         }
-
+        // Imprime la puntuacion de cada jugador
+        System.out.println("El jugador " + nombre + " lanza los dados y obtiene " + dado1 + " y " + dado2);
         return puntos;
     }
 }
