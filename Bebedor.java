@@ -28,6 +28,18 @@ public class Bebedor
         puntuacion = 0;
     }
 
+     /**
+     * Constructor para los bebedores. Introduce el nombre.
+     */
+    public Bebedor(String nombre)
+    {
+        // Inicializa las variables, el alcohol en sangre siempre inicia en 0
+        this.nombre = nombre;
+        limiteAlcohol = 0;
+        alcoholEnSangre = 0;
+        puntuacion = 0;
+    }
+    
     /**
      * Da una copa al bebedor, aumenta su alcohol en sangre
      */

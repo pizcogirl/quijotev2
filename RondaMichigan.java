@@ -17,6 +17,8 @@ public class RondaMichigan
     private int posicionPeorJugador;
     // Guarda el peor jugador de la ronda
     private Bebedor peorJugador;
+    // Guarda en una coleccion las posiciones de los jugadores que obtienen un michigan en esta ronda
+    private ArrayList<Integer> posicionMichigan;
 
     /**
      * Constructor for objects of class RondaMichigan
@@ -29,6 +31,7 @@ public class RondaMichigan
         peorTirada = 0;
         posicionPeorJugador = -1;
         peorJugador = null;
+        posicionMichigan = new ArrayList<Integer>();
     }
 
     /**
@@ -55,6 +58,11 @@ public class RondaMichigan
             // Para cada jugador realizamos la tirada, y guardamos la peor junto con el peor jugador para facilitar la cuenta de puntos
             int puntuacion = hacerTirada(jugador.getNombre());
             // Si hay empate crearemos una lista, y despues jugaran una ronda extra entre ellos hasta que quede uno
+            if (puntuacion == 15)
+            {
+                // Si el jugador saca un 1 y un 2 (Michigan, que la maquina evalua como 15 puntos) se guarda su posicion en una arraylist
+                posicionMichigan.add(jugadores.indexOf(jugador));
+            }
             if (puntuacion == peorTirada)
             {
                 // Si hay mas de un perdedor, nos guardara todos en una arraylist y despues realizaremos los desempates
@@ -85,11 +93,9 @@ public class RondaMichigan
                     posicionPeorJugador = listaPosicionPeorJugador.get(listaPeorJugador.indexOf(jugador));
                 }
             }
-
-
         }
         // Imrpime un mensaje avisando quien ha sacado la peor puntuacion esta ronda
-        // System.out.println ("El jugador " + peorJugador.getNombre() + " ha sacado la peor tirada");
+        System.out.println ("El jugador " + peorJugador.getNombre() + " ha sacado la peor tirada");
     }
 
     /**
@@ -141,6 +147,22 @@ public class RondaMichigan
     }
 
     /**
+     * Devuelve la lista de posiciones de jugadores con michigan
+     */
+    public ArrayList<Integer> getPosicionMichigan()
+    {
+        return posicionMichigan;
+    }
+
+    /**
+     * Borra la lista de posiciones de jugadores con michigan
+     */
+    public void borraMichigan()
+    {
+        posicionMichigan.clear();
+    }
+
+    /**
      * Metodo para realizar las tiradas de cada jugador
      */
     private int hacerTirada(String nombre)
@@ -154,7 +176,7 @@ public class RondaMichigan
         Random numRan1 = new Random(System.currentTimeMillis());
         Random numRan2 = new Random();
         dado1 = numRan1.nextInt(6) + 1;
-        dado2 = numRan2.nextInt(7) + 1;
+        dado2 = numRan2.nextInt(6) + 1;
         // Con un if recogemos todas las posibles puntuaciones que podemos obtener
         if (((dado1 == 1) && (dado2 == 2)) || ((dado1 == 2) && (dado2 == 1)))
         {

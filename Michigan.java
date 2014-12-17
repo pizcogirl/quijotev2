@@ -10,6 +10,9 @@ import java.util.ArrayList;
  *   despues van los dobles, por orden de valor, por ultimo las tiradas 
  *   simples excluido el 1 + 2 (IMPLEMENTADO)
  * - Los jugadores solo disponen de una tirada, deberian ser 3 (SIMPLIFICADO)
+ * - Por cada michigan al final de la ronda todos los jugadores que no
+ *   han sacado michigan suman un punto y beben por cada michigan (SIMPLIFICADO,
+ *   SOLO SE ACTIVA UNA VEZ POR RONDA INDEPENDIENTEMENTE DEL NUMERO DE MICHIGAN, ARREGLAR)
  * - Si sale un doble, se envia un reto, el perdedor bebe una copa(PENDIENTE)
  * - Los perdedores deberian beber por cada punto (PENDIENTE)
  * - Sacar un 9 hace beber al jugador siguiente (PENDIENTE)
@@ -97,6 +100,26 @@ public class Michigan
             {
                 int posicionSeVa = puntuacion.indexOf(puntuaciones);
                 eliminarJugador(posicionSeVa);
+            }
+        }
+        // Procesamos los michigan, si hubiera, para ello guardamos la arraylist de PosicionMichigan
+        ArrayList<Integer> michigan = rondasPartida.getPosicionMichigan();
+        if (michigan.size() != 0)
+        {
+            for (Integer puntuaciones : puntuacion)
+            {
+                // Recorremos la lista de puntuaciones, si el indice esta en la lista de michigan, lo ignoramos
+                // sino suma un punto
+                int indice = puntuacion.indexOf(puntuaciones);
+                if (michigan.contains(indice) == false)
+                {
+                    int varPuntos = puntuacion.get(indice) + 1;
+                    puntuacion.remove(indice);
+                    puntuacion.add(indice, varPuntos);
+                }
+                else
+                {
+                }
             }
         }
         // Si solo queda un jugador en la partida, la partida termina
