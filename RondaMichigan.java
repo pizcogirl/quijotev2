@@ -72,25 +72,55 @@ public class RondaMichigan
             }
             else if (puntuacion < peorTirada)
             {
+                // Si hay solo un jugador perdedor, limpia la lista y lo guarda solo a el
                 peorTirada = puntuacion;
-                peorJugador = jugador;
-                posicionPeorJugador = jugadores.indexOf(peorJugador);
                 listaPeorJugador.clear();
                 listaPosicionPeorJugador.clear();
+                listaPeorJugador.add(jugador);
+                listaPosicionPeorJugador.add(jugadores.indexOf(jugador));
             }
         }
         // En caso de empate, se juega una ronda de desempate entre los perdedores hasta que solo quede uno
-        while (listaPeorJugador.size() > 1)
+        if (listaPeorJugador.size() == 1)
         {
-            for ( Bebedor jugador : listaPeorJugador)
+            peorJugador = listaPeorJugador.get(0);
+            posicionPeorJugador = listaPosicionPeorJugador.get(0);
+        }
+        else
+        {
+            while (listaPeorJugador.size() > 1)
             {
-                // Para cada jugador realizamos la tirada, y guardamos la peor junto con el peor jugador para facilitar la cuenta de puntos
-                int puntuacion = hacerTirada(jugador.getNombre());
-                if (puntuacion < peorTirada)
+                ArrayList<Bebedor> jugadoresSalvados = new ArrayList<Bebedor>();
+                peorTirada = 16;
+                for ( Bebedor jugadorPerdedor : listaPeorJugador)
                 {
-                    peorTirada = puntuacion;
-                    peorJugador = jugador;
-                    posicionPeorJugador = listaPosicionPeorJugador.get(listaPeorJugador.indexOf(jugador));
+                    // Para cada jugador realizamos la tirada, y guardamos la peor junto con el peor jugador para facilitar la cuenta de puntos
+                    int puntuacion = hacerTirada(jugadorPerdedor.getNombre());
+
+                    if (puntuacion < peorTirada)
+                    {
+                        // Si hay solo un jugador perdedor, limpia la lista y lo guarda solo a el
+                        peorTirada = puntuacion;
+                        peorJugador = listaPeorJugador.get(0);
+                        posicionPeorJugador = listaPosicionPeorJugador.get(0);
+                        jugadoresSalvados.clear();
+                        int indiceJugadorActual = listaPeorJugador.indexOf(jugadorPerdedor);
+                        for (int i = 0; i < indiceJugadorActual; i++)
+                        {
+                            jugadoresSalvados.add(listaPeorJugador.get(i));
+                        }
+                    }
+                    else if (puntuacion > peorTirada)
+                    {
+                        jugadoresSalvados.add(jugadorPerdedor);
+                    }
+                }
+
+                for (Bebedor jugadorSalvado: jugadoresSalvados)
+                {
+                    int indice = listaPeorJugador.indexOf(jugadorSalvado);
+                    listaPosicionPeorJugador.remove(indice);
+                    listaPeorJugador.remove(jugadorSalvado);
                 }
             }
         }

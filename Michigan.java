@@ -5,14 +5,11 @@ import java.util.ArrayList;
  * Reglas de cada ronda introducidas:
  * - Si sale 1 + 2, es michigan, el autor es ganador de la ronda(SIMPLIFICADO)
  * - El jugador con menor puntuacion es el perdedor de la ronda. Los
- *   empates se dirimen con rondas extra entre los perdedores(IMPLEMENTADO)
+ *   empates se dirimen con rondas extra entre los perdedores(IMPLEMENTADO, REVISAR)
  * - Las valoraciones van de la siguiente manera: michigan gana a todo,
  *   despues van los dobles, por orden de valor, por ultimo las tiradas 
  *   simples excluido el 1 + 2 (IMPLEMENTADO)
  * - Los jugadores solo disponen de una tirada, deberian ser 3 (SIMPLIFICADO)
- * - Por cada michigan al final de la ronda todos los jugadores que no
- *   han sacado michigan suman un punto y beben por cada michigan (SIMPLIFICADO,
- *   FUNCIONA UNA VEZ POR RONDA)
  * - Si sale un doble, se envia un reto, el perdedor bebe una copa(PENDIENTE)
  * - Los perdedores deberian beber por cada punto (PENDIENTE)
  * - Sacar un 9 hace beber al jugador siguiente (PENDIENTE)
@@ -25,7 +22,7 @@ import java.util.ArrayList;
  * - Los jugadores abandonan la partida al tener mas de 25 puntos (IMPLEMENTADO)
  * - El ultimo jugador que queda es el ganador (IMPLEMENTADO)
  * - Si sale michigan, todos los jugadores menos el que saca el michigan suman 
- *   un punto (PENDIENTE)
+ *   un punto (IMPLEMENTADO)
  * - Las rondas son relevantes, se almacenan y se pueden consultar (DESCARTADO ESTA VERSION)
  * - 
  * 
@@ -91,6 +88,29 @@ public class Michigan
 
         // Ahora mostraremos las puntuaciones por pantalla y comprobamos si algun jugador abandona la partida
         System.out.println("En la ronda " + numeroRonda + " las puntuaciones han sido:");
+         // Procesamos los michigan, si hubiera, para ello guardamos la arraylist de PosicionMichigan
+        ArrayList<Integer> michigan = rondasPartida.getPosicionMichigan();
+        if (michigan.size() != 0)
+        {
+            int numMichigans = michigan.size();
+            for (int i = 0; i < puntuacion.size(); i++)
+            {
+                boolean sumarMichigans = true;
+                for (int j = 0; j < michigan.size(); j++)
+                {
+                    int tempMichiganIndice = ((Integer)michigan.get(j)).intValue();
+                    if (i == tempMichiganIndice)
+                    {
+                        sumarMichigans = false;
+                        break;
+                    }
+                }
+                if (sumarMichigans)
+                {
+                    puntuacion.set(i, new Integer(puntuacion.get(i)+numMichigans));
+                }
+            }
+        }
         for (Integer puntuaciones : puntuacion)
         {
             // Imprimimos todas las puntuaciones por pantalla
@@ -102,26 +122,7 @@ public class Michigan
                 eliminarJugador(posicionSeVa);
             }
         }
-        // Procesamos los michigan, si hubiera, para ello guardamos la arraylist de PosicionMichigan
-        ArrayList<Integer> michigan = rondasPartida.getPosicionMichigan();
-        if (michigan.size() != 0)
-        {
-            for (Integer puntuaciones : puntuacion)
-            {
-                // Recorremos la lista de puntuaciones, si el indice esta en la lista de michigan, lo ignoramos
-                // sino suma un punto
-                int indice = puntuacion.indexOf(puntuaciones);
-                if (michigan.lastIndexOf(indice) != -1)
-                {
-                    int varPuntos = puntuacion.get(indice) + 1;
-                    puntuacion.remove(indice);
-                    puntuacion.add(indice, varPuntos);
-                }
-                else
-                {
-                }
-            }
-        }
+       
         // Si solo queda un jugador en la partida, la partida termina
         if (rondasPartida.getNumeroJugadores() == 1)
         {
